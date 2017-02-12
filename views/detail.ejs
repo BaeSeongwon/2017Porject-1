@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>detail</title>
+    <%- include('lib.ejs') %>
+</head>
+<body>
+<%- include('menue.ejs') %>
+<%- include('midImg.ejs') %>
+<div class="col-me-7" style="overflow: scroll; height: 100%; padding: 0px 20px 0px 20px;">
+    <%- include('nav.ejs') %>
+    <h2 id="detatilContentsTitle"></h2>
+    <hr>
+    <div id="detailContentsContainer"></div>
+    <div style="width: 100%; height: 150px; border: 1px solid #F5F5F5; margin-bottom: 20px; overflow:auto;">
+        <table id="file_table" class="table table-striped" style="font-size: 12px;">
+            <thead>
+                <th>제목</th>
+                <th>다운로드</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="/client/js/detail.js"></script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booker</title>
+    <%- include('lib.ejs') %>
+    <script src="../client/js/resume.js"></script>
+</head>
+<body>
+<%- include('menue.ejs') %>
+<%- include('midImg.ejs') %>
+<div class="col-md-7" style="overflow: scroll; height: 100%;">
+  <%- include('nav.ejs') %>
+    <div style="width: 706px; margin: 0px auto; font-size: 11px; margin-top: 30px;">
+        <!--이력 상당 이미지 지원분야 ~ 주소 start-->
+        <div>
+            <div style="display: inline-block">
+                <div id="div_img" class="resume_img">
+                    <img src="<%= resume.picture %>" style="opacity:1;" class="resume_img_input">
+                    <!--<a href="#" class="thumbnail" style="height: 150px;"></a>-->
+                </div>
+            </div>
+            <div style="display: inline-block; width: calc(706px - 160px);">
+                <div>
+                    <table class="table table-bordered table-condensed" style="text-align: center;">
+                        <tr>
+                            <td class="active">지원분야</td>
+                            <td><%= resume.supporting_field %></td>
+                            <td class="active">희망연봉</td>
+                            <td><%= resume.salary_requirement %></td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <table class="table table-bordered table-condensed" style="text-align: center;">
+                        <tr>
+                            <td class="active">이름</td>
+                            <td colspan="3"><%= resume.name %></td>
+                        </tr>
+                        <tr>
+                            <td class="active">주민등록번호</td>
+                            <% if(loginCheck == resume.student_co){ %>
+                            <td colspan="3"><%= resume.social_id_number %></td>
+                            <% }else{%>
+                            <td colspan="3"><%= resume.social_id_number.split('-')[0] %>-*******</td>
+                            <% } %>
+                        </tr>
+                        <tr>
+                            <td class="active">이메일</td>
+                            <td><%= resume.email %></td>
+                            <td class="active">핸드폰</td>
+                            <td><%= resume.phone %></td>
+                        </tr>
+                        <tr>
+                            <td class="active">주소</td>
+                            <td colspan="3"><%= resume.address %></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <!--이력 상당 이미지 지원분야 ~ 주소 end-->
+        <!--이력 학력사항 start-->
+        <div>
+            <p>
+              <strong>학력사항</strong>
+            </p>
+            <table class="table table-bordered table-condensed" style="text-align: center;">
+              <thead>
+                <tr>
+                    <td class="active">재학기간</td>
+                    <td class="active">학력사항</td>
+                    <td class="active">전공</td>
+                    <td class="active">학점</td>
+                </tr>
+              </thead>
+              <tbody id="student">
+                <% for(var res = 0; res < resume.academic_abilitu.length; res++){ %>
+                <tr>
+                    <td class="resumeBoxHeight"><%= resume.academic_abilitu[res][0] %></td>
+                    <td class="resumeBoxHeight"><%= resume.academic_abilitu[res][1] %></td>
+                    <td class="resumeBoxHeight"><%= resume.academic_abilitu[res][2] %></td>
+                    <td class="resumeBoxHeight"><%= resume.academic_abilitu[res][3] %></td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
+        </div>
+        <!--이력 학력사항 end-->
+        <!--이력 경력사항 start-->
+        <div>
+            <p>
+              <strong>경력사항</strong>
+            </p>
+            <table class="table table-bordered table-condensed" style="text-align: center;">
+              <thead>
+                <tr>
+                    <td class="active">기간</td>
+                    <td class="active">구분</td>
+                    <td class="active">기관 및 장소</td>
+                    <td class="active">상세내용</td>
+                </tr>
+              </thead>
+              <tbody id="career">
+                <% for(var res = 0; res < resume.carrer.length; res++){ %>
+                <tr>
+                    <td class="resumeBoxHeight"><%= resume.carrer[res][0] %></td>
+                    <td class="resumeBoxHeight"><%= resume.carrer[res][1] %></td>
+                    <td class="resumeBoxHeight"><%= resume.carrer[res][2] %></td>
+                    <td class="resumeBoxHeight"><%= resume.carrer[res][3] %></td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
+        </div>
+        <!--이력 경력사항 end-->
+        <!--이력 어학시험 ~ 자격증/면허증 start-->
+        <div>
+            <div style="width: 49%; display: inline-block">
+                <p>
+                  <strong>어학시험</strong>
+                </p>
+                <table class="table table-bordered table-condensed" style="text-align: center;">
+                  <thead>
+                    <tr>
+                        <td class="active">언어</td>
+                        <td class="active">어학시험</td>
+                        <td class="active">시험점수(등급)</td>
+                        <td class="active">취득일</td>
+                    </tr>
+                  </thead>
+                  <tbody id="language">
+                    <% for(var res = 0; res < resume.language.length; res++){ %>
+                    <tr>
+                        <td class="resumeBoxHeight"><%= resume.language[res][0] %></td>
+                        <td class="resumeBoxHeight"><%= resume.language[res][1] %></td>
+                        <td class="resumeBoxHeight"><%= resume.language[res][2] %></td>
+                        <td class="resumeBoxHeight"><%= resume.language[res][3] %></td>
+                    </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+            </div>
+            <div style="width: 50%; display: inline-block">
+                <p>
+                  <strong>자격증 / 면허증</strong>
+                </p>
+                <table class="table table-bordered table-condensed" style="text-align: center;">
+                  <thead>
+                    <tr>
+                        <td class="active">자격증/면허증</td>
+                        <td class="active">발행처/발행기관</td>
+                        <td class="active">취득일</td>
+                    </tr>
+                  </thead>
+                  <tbody id='license'>
+                    <% for(var res = 0; res < resume.license.length; res++){ %>
+                    <tr>
+                        <td class="resumeBoxHeight"><%= resume.license[res][0] %></td>
+                        <td class="resumeBoxHeight"><%= resume.license[res][1] %></td>
+                        <td class="resumeBoxHeight"><%= resume.license[res][2] %></td>
+                    </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+            </div>
+        </div>
+        <!--이력 어학시험 ~ 자격증/면허증 end-->
+        <!--이력 수상내역/공모전 start-->
+        <div>
+            <p>
+              <strong>이력 수상내역/공모전</strong>
+            </p>
+            <table class="table table-bordered table-condensed" style="text-align: center;">
+              <thead>
+                <tr>
+                    <td class="active">수상명</td>
+                    <td class="active">수여기관</td>
+                    <td class="active">수상일자</td>
+                </tr>
+              </thead>
+              <tbody id='history'>
+                <% for(var res = 0; res < resume.contest_exhibit.length; res++){ %>
+                <tr>
+                    <td class="resumeBoxHeight"><%= resume.contest_exhibit[res][0] %></td>
+                    <td class="resumeBoxHeight"><%= resume.contest_exhibit[res][1] %></td>
+                    <td class="resumeBoxHeight"><%= resume.contest_exhibit[res][2] %></td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
+        </div>
+        <!--이력 수상내역/공모전 end-->
+    </div>
+</div>
+</body>
+</html>

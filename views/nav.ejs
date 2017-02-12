@@ -1,0 +1,15 @@
+<% if(loginCheck == undefined){ %>
+<nav class="nav-container">
+    <form action="/auth/login" method="post" class="form-inline">
+        <input type="text" class="form-control input-sm" name="stu">
+        <input type="password" class="form-control input-sm" name="password">
+        <input type="submit" class="form-control input-sm" value="로그인">
+        <a href="/auth/regist" style="color: #000; margin-left: 10px;">회원가입</a>
+    </form>
+</nav>
+<% }else{ %>
+<nav class="nav-container">
+    <span><%= user_name %>님</span>
+    <a href="/logout" style="color: #000; margin-left: 20px;">로그 아웃</a>
+</nav>
+<% } %>

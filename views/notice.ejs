@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booker</title>
+    <%- include('lib.ejs') %>
+    <script src="../client/js/notice.js"></script>
+</head>
+<body>
+<%- include('menue.ejs') %>
+<%- include('midImg.ejs') %>
+<div class="col-md-7" style="height: 100%;">
+    <!--상단 로그인 버튼 / 사용자 정보-->
+    <%- include('nav.ejs') %>
+    <div style="margin-bottom: 10px; margin-top: 30px;">
+        <div style="width: 50%; display: inline-block;">
+            <select id="selectBox" class="form-control" style="width: 80px; margin-right: 10px; float: left;">
+                <option>제목</option>
+                <option>작성자</option>
+            </select>
+            <div class="input-group" style="width: 300px; float:left;">
+                <input id="searchInput" type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+                <button class="btn btn-default" type="button" onclick="search()">검색</button>
+              </span>
+            </div>
+        </div>
+        <div style="width: 49%; display: inline-block;">
+            <% if(loginCheck != undefined){ %>
+            <button class="pull-right btn btn-success" onclick="moveWrite()">글작성</button>
+            <% } %>
+        </div>
+    </div>
+    <%if(notice == null){%>
+    <article class="atc_containder" style="text-align:center;">
+        <h3>게시글이 없습니다.</h3>
+    </article>
+    <%}else{%>
+    <% for(var a in notice){%>
+    <article class="atc_containder">
+        <p class="atc_title">
+            <strong onclick="getDetail('<%=notice[a]._id%>')" style="cursor:pointer;"><%= notice[a].title %></strong>
+            <% if(loginCheck == notice[a].student_co){%>
+            <span class="article_modify">수정</span>
+            <span class="article_delete" onclick="deleteArticle('<%= notice[a]._id %>')">삭제</span>
+            <% } %>
+        </p>
+        <span class="badge">조회수 : <%= notice[a].inquery_count%></span>
+        <span style="padding: 3px 7px 3px 7px"><%= notice[a].student_co %> / <%= notice[a].name %></span>
+        <span><%= notice[a].date %></span>
+    </article>
+    <%}%>
+    <%}%>
+    <div style="position: absolute; left: 50%; transform: translateX(-50%);">
+        <nav aria-label="Page navigation" style="margin: 0px auto;">
+            <ul class="pagination">
+                <li>
+                    <a href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <% for(var i = 1; i<=pagination; i++){ %>
+                <li><a href="/notice?page=<%=i%>"><%=i%></a></li>
+                <% } %>
+                <li>
+                    <a href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+</body>
+</html>

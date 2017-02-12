@@ -1,0 +1,25 @@
+{
+  "name": "20111789",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.16.0",
+    "cookie-parser": "^1.4.3",
+    "data-utils": "0.0.2",
+    "date-utils": "^1.2.21",
+    "ejs": "^2.5.5",
+    "express": "^4.14.1",
+    "express-session": "^1.15.0",
+    "fs": "0.0.1-security",
+    "mongoose": "^4.8.1",
+    "multer": "^1.3.0",
+    "path": "^0.12.7"
+  }
+}

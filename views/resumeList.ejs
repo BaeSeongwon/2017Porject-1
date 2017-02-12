@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booker</title>
+    <%- include('lib.ejs') %>
+    <script src="../client/js/resume.js"></script>
+</head>
+<body>
+<%- include('menue.ejs') %>
+<%- include('midImg.ejs') %>
+<div class="col-md-7" style="height: 100%;">
+  <!--상단 로그인 버튼 / 사용자 정보-->
+  <%- include('nav.ejs') %>
+  <div style="margin-bottom: 10px; margin-top: 30px;">
+      <div style="width: 50%; display: inline-block;">
+          <select id="selectBox" class="form-control" style="width: 80px; margin-right: 10px; float: left;">
+              <option>제목</option>
+              <option>작성자</option>
+          </select>
+          <div class="input-group" style="width: 300px; float:left;">
+              <input id="searchInput" type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" onclick="search()">검색</button>
+              </span>
+          </div>
+      </div>
+      <div style="width: 49%; display: inline-block;">
+          <% if(loginCheck != undefined){ %>
+          <button class="pull-right btn btn-success" onclick="moveResumeWrite()">글작성</button>
+          <% } %>
+      </div>
+  </div>
+  <article class="atc_containder" style="text-align:center;">
+    <div class="row">
+      <% for(var index in resume){ %>
+      <div class="col-sm-6 col-md-3">
+        <div class="thumbnail">
+          <img src='<%= resume[index].picture %>' alt="..." style="background-size:cover; width: 120px; height: 150px;">
+          <div>
+            <h4 onclick="moveDetailResume('<%= resume[index]._id %>')" style="cursor:pointer;"><%= resume[index].name %></h4>
+            <p><small><%= resume[index].date %></small></p>
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </article>
+</div>
+</body>
+</html>
