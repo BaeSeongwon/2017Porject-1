@@ -1,7 +1,7 @@
 var express = require('express');
 var Resume = require('../model/resume');
 var multer = require('multer');
-var pub = require('../public');
+var pub = require('../method/auth');
 var fs = require('fs');
 var router = express.Router();
 
@@ -82,13 +82,15 @@ router.post('/upload',function(req,res){
     contest_exhibit: req.body.contest_exhibit,
     date: req.body.date
   });
+  
+  console.log(resume);
 
   resume.save(function(err){
     if(err){
       console.log(err);
       res.json({result: 0});
     }else{
-      res.send('<script>location.href="/resume/";</script>');
+      res.send('/resume/');
     }
   });
 })

@@ -1,49 +1,42 @@
-/**
- * Created by Life on 2017-02-10.
- */
-/**
- * Created by Life on 2017-02-10.
- */
 var express = require('express');
-var Qna = require('../model/qna');
-var pub = require('../public');
+var Qna = require('../model/notice');
+var Auth = require('../method/auth');
+var Create = require('../method/create');
+var Read = require('../method/read');
+var Update = require('../method/update');
+var Del = require('../method/delete');
+var File = require('../method/fileUpload');
+
+var pub = require('../method/auth');
 var multer = require('multer');
-var fs =require('fs');
+var fs = require('fs');
 var router = express.Router();
 
 //이미지 업로드
 var img = multer({
-    dest: 'public/img/qna/'
+    dest: 'public/img/notice/'
 });
 
 //파일 업로드
 var file = multer({
-    dest: 'public/file/qna/'
+    dest: 'public/file/notice/'
+});
+
+router.get('/write',function(req,res){
+    res.render('write',function(err,result){
+        if(!err){
+            res.end(result);
+        }else{
+            res.end("에러 가 뜸!!");
+            console.log(err);
+        }
+    });
 });
 
 router.get('/',function(req,res){
-    var page = req.query.page;
-    if(page == null){
-        page = 1;
-    }
-    var skipSize = (page-1)*1;
-    var limitSize = 1;
-    var pageNum = 1;
-    var sendData = {};
-    var pageNum = 1;
-    sendData = pub.loginCheck(req);
-    Qna.count(function(err,totalCount){
-        pageNum = Math.ceil(totalCount/limitSize);
-
-        Qna.find().sort({date:-1}).skip(skipSize).limit(limitSize).exec(function(err,qnas){
-            if(qnas == ""){
-                sendData.pagination = pageNum;
-                sendData.qna = null;
-            }else{
-                sendData.pagination = pageNum;
-                sendData.qna = qnas;
-                console.log(pageNum);
-            }
+    Read
+        .read(req,Qna,Auth)
+        .then(function(sendData){
             res.render('qna',sendData,function(err,result){
                 if(!err){
                     res.end(result);
@@ -53,7 +46,95 @@ router.get('/',function(req,res){
                 }
             });
         });
+});
+
+router.post('/send',function(req,res){
+    Create
+        .create(req,Qna)
+        .then(function(result){
+            res.json({result : '/'});
+        });
+});
+
+router.get('/detail/',function(req,res){
+    Read
+        .readDetail(req,Qna,Auth)
+        .then(function(sendData){
+            console.log(sendData);
+            res.render('detail',sendData,function(err,result){
+                if(!err){
+                    res.end(result);
+                }else{
+                    console.log(err);
+                    res.end('에러가 뜸');
+                }
+            });
+        });
+});
+
+router.get('/details/get',function(req,res){
+    Read
+        .readDetails(req,Qna)
+        .then(function(sendData){
+            res.send(sendData);
+        });
+});
+
+router.get('/update/get',function(req,res){
+    var sendData = {};
+    sendData = Auth.loginCheck(req);
+    res.render('update',sendData,function(err,result){
+        if(!err){
+            res.end(result);
+        }else{
+            res.end('에러가 뜸');
+        }
     });
+});
+
+router.get('/update/send',function(req,res){
+    Update
+        .getUpdate(req,Qna)
+        .then(function(result){
+            res.send(result);
+        });
+});
+
+router.post('/update/post',function(req,res){
+    Update
+        .update(req,Qna,'qna')
+        .then(function(result){
+            console.log(result);
+            res.send(result);
+        });
+});
+
+router.get('/delete',function(req,res){
+    Del
+        .delete(req,Qna,'qna')
+        .then(function(result){
+            var location = "/" + result;
+            res.send('<script>alert("게시글을 삭제 했습니다."); location.href="' + location + '";</script>')
+        });
+});
+
+router.post('/img/upload',img.single('uploadFile'),function(req,res){
+    var location = 'qna';
+    File
+        .imgUpload(req,fs,location)
+        .then(function(url){
+            console.log(url);
+            res.send(url);
+        });
+});
+
+router.post('/file/upload',file.single('uploadFile'),function(req,res){
+    var location = 'qna';
+    File
+        .fileUpload(req,fs,location)
+        .then(function(result){
+            res.send(result);
+        });
 });
 
 module.exports = router;

@@ -1,10 +1,17 @@
 (function(){
-	getContentsData();
-
-	function getContentsData(){
+	$(document).ready(function(){
 		var path = $(location).attr('pathname').split('/')[1];
 		var parameter = $(location).attr('search').split('=')[2];
 		var url = '/'+path+'/details/get?index='+parameter;
+		
+		getContentsData(url,path);
+
+		var wid = $('.dft_imgContainer').outerWidth() + $('.menue-container').width();
+		$('#mainContents').css('width','100%').css('width','-='+ wid +'px');
+		
+	});
+
+	function getContentsData(url,path){
 		$.ajax({
 			url: url,
 			type: 'get',
@@ -13,7 +20,7 @@
 				appendContentsFile(result.attach_file,path);
 				appendContents(result);
 			}
-		})
+		});
 	};
 
 	function appendContents(result){

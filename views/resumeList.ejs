@@ -9,7 +9,7 @@
 <body>
 <%- include('menue.ejs') %>
 <%- include('midImg.ejs') %>
-<div class="col-md-7" style="height: 100%;">
+<div class="col-md-8" style="height: 100%;">
   <!--상단 로그인 버튼 / 사용자 정보-->
   <%- include('nav.ejs') %>
   <div style="margin-bottom: 10px; margin-top: 30px;">
@@ -31,15 +31,20 @@
           <% } %>
       </div>
   </div>
-  <article class="atc_containder" style="text-align:center;">
+  <article class="atc_containder">
     <div class="row">
       <% for(var index in resume){ %>
       <div class="col-sm-6 col-md-3">
-        <div class="thumbnail">
-          <img src='<%= resume[index].picture %>' alt="..." style="background-size:cover; width: 120px; height: 150px;">
-          <div>
+        <div class="thumbnail" style="padding:0px;">
+          <img src='<%= resume[index].picture %>' style="background-size:cover; width: 120px; height: 150px;">
+          <div style='background-color:#4331A9; width100%; height:100%; padding: 10px; color: white'>
             <h4 onclick="moveDetailResume('<%= resume[index]._id %>')" style="cursor:pointer;"><%= resume[index].name %></h4>
-            <p><small><%= resume[index].date %></small></p>
+            <p>
+              <small><%= resume[index].date %></small>
+              <small style="cursor:pointer;">수정</small>
+              <small> / </small>
+              <small style="cursor:pointer;">삭제</small>
+            </p>
           </div>
         </div>
       </div>

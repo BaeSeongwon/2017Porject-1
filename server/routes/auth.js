@@ -1,24 +1,27 @@
 var express = require('express');
 var User = require('../model/user');
+var passport = require('passport');
 var router = express.Router();
+// 패스포트 세팅 
+require('../method/passport').setup();
 
 router.post('/login',function(req,res){
-  User.find({student_co : req.body.stu} ,function(err,result){
+  User.find({student_id : req.body.stu} ,function(err,result){
     if(err){
-
+      console.log(err);
     }else{
       if(result != false){
         var userData = result[0];
         //로그인 인증 완료시 세션 및 쿠키에 삽입
         if(userData.password == req.body.password){
+          req.session.role = userData.role;
           req.session.user_id = req.body.stu;
-          console.log(userData);
           res.cookie('id',req.body.stu);
           res.cookie('name',userData.name);
           res.send('<script>alert("로그인 성공!!"); location.href="/";</script>');
         }
       }else{
-        res.send('<script>alert("존재하지 않는 학번입니다."); history.back();</script>');
+        res.send('<script>alert("존재하지 않는 아이디 입니다."); history.back();</script>');
       }
     }
   });
@@ -42,10 +45,11 @@ router.get("/regist",function(req,res){
 
 router.post('/regist',function(req,res){
   var user = new User({
-    student_co : req.body.student_co,
+    student_id : req.body.student_id,
     password : req.body.password,
     name : req.body.name,
-    phone : req.body.phoneNumber
+    phone : req.body.phoneNumber,
+    role : 'normal'
   });
 
   user.save(function(err){
@@ -57,6 +61,21 @@ router.post('/regist',function(req,res){
       res.redirect('/');
     }
   });
+});
+
+router.get('/check',function(req,res){
+  var id = req.query.id;
+  User.findOne({"student_id":id},function(err,result){
+    if(err){
+      res.send(err);
+    }else{
+      if(result == null){
+        res.send(false);
+      }else{
+        res.send(true)
+      }
+    }
+  })
 })
 
 module.exports = router;

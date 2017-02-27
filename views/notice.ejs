@@ -9,7 +9,7 @@
 <body>
 <%- include('menue.ejs') %>
 <%- include('midImg.ejs') %>
-<div class="col-md-7" style="height: 100%;">
+<div class="col-md-8" style="height: 100%;">
     <!--상단 로그인 버튼 / 사용자 정보-->
     <%- include('nav.ejs') %>
     <div style="margin-bottom: 10px; margin-top: 30px;">
@@ -31,23 +31,23 @@
             <% } %>
         </div>
     </div>
-    <%if(notice == null){%>
+    <%if(model == null){%>
     <article class="atc_containder" style="text-align:center;">
         <h3>게시글이 없습니다.</h3>
     </article>
     <%}else{%>
-    <% for(var a in notice){%>
+    <% for(var a in model){%>
     <article class="atc_containder">
         <p class="atc_title">
-            <strong onclick="getDetail('<%=notice[a]._id%>')" style="cursor:pointer;"><%= notice[a].title %></strong>
-            <% if(loginCheck == notice[a].student_co){%>
-            <span class="article_modify">수정</span>
-            <span class="article_delete" onclick="deleteArticle('<%= notice[a]._id %>')">삭제</span>
+            <strong onclick="getDetail('<%=model[a]._id%>')" style="cursor:pointer;"><%= model[a].title %></strong>
+            <% if(loginCheck == model[a].student_co){%>
+            <span class="article_modify" onclick="updateArticle('<%= model[a]._id %>')">수정</span>
+            <span class="article_delete" onclick="deleteArticle('<%= model[a]._id %>')">삭제</span>
             <% } %>
         </p>
-        <span class="badge">조회수 : <%= notice[a].inquery_count%></span>
-        <span style="padding: 3px 7px 3px 7px"><%= notice[a].student_co %> / <%= notice[a].name %></span>
-        <span><%= notice[a].date %></span>
+        <span class="badge">조회수 : <%= model[a].inquery_count%></span>
+        <span style="padding: 3px 7px 3px 7px"><%= model[a].student_co %> / <%= model[a].name %></span>
+        <span><%= model[a].date %></span>
     </article>
     <%}%>
     <%}%>

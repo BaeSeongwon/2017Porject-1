@@ -8,26 +8,32 @@ var session = require('express-session');
 var date = require('date-utils');
 var mongoose = require('mongoose');
 var fs = require('fs');
+const Agent = require('agentkeepalive');
+const keepaliveAgent = new Agent({
+    maxSockets: 100,
+    maxFreeSockets: 10,
+    timeout: 60000,
+    freeSocketKeepAliveTimeout: 30000, // free socket keepalive for 30 seconds
+});
 
 /* 모델 */
-var Board = require('./server/model/board');
 var User = require('./server/model/user');
 var English = require('./server/model/english');
 var Notice = require('./server/model/notice');
 var Free = require('./server/model/free');
 var Qna = require('./server/model/qna');
+var Job = require('./server/model/job');
 
 /* 라우터 모듈 */
 var index = require('./server/routes/index');
 var auth = require('./server/routes/auth');
-var board = require('./server/routes/board');
 var laboratory = require('./server/routes/laboratory');
 var english = require('./server/routes/english');
-var comunity = require('./server/routes/comunity');
 var resume = require('./server/routes/resume');
 var notice = require('./server/routes/notice');
 var free = require('./server/routes/free');
 var qna = require('./server/routes/qna');
+var job = require('./server/routes/job');
 
 date = new Date();
 
@@ -35,6 +41,7 @@ var app = express();
 var db = mongoose.connection;
 var index;
 
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://127.0.0.1:27017/bgProject-Board');
 
 app.use(session({
@@ -59,25 +66,35 @@ app.set('views',__dirname + '/views');
 /* use routing */
 app.use('/',index);
 app.use('/auth',auth);
-app.use('/board',board);
 app.use('/lab',laboratory);
 app.use('/english',english);
 app.use('/resume',resume);
 app.use('/notice',notice);
 app.use('/free',free);
 app.use('/qna',qna);
+app.use('/job',job);
 
 app.get('/download',function(req,res){
 	var url = 'public/file/temp/' + req.query.fileName;
-	console.log(url);
 	res.download(url);
 });
 
-http.createServer(app).listen('3000',function(){
+app.get('/logout',function(req,res){
+	console.log(req.session);
+	req.session.destroy(function(err){
+		console.log(err);
+	});
+	// req.session;  // 세션 삭제
+	res.clearCookie('id'); // 세션 쿠키 삭제
+	res.clearCookie('name');
+	res.send('<script>alert("로그아웃 하셨습니다."); window.location.href="/";</script>')
+});
+
+http.createServer(app).listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0",function(){
 	db.on('error', console.error);
 	db.once('open', function(){
 		console.log("몽고 디비 접속 성공!");
 	})
-});
+}).setTimeout(1000);
 
 

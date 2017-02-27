@@ -1,6 +1,6 @@
 var express = require('express');
 var multer = require('multer');
-var pub = require('../public');
+var pub = require('../method/auth');
 var fs = require('fs');
 var router = express.Router();
 

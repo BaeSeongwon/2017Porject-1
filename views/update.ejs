@@ -6,15 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>글 작성</title>
     <%- include('lib.ejs') %>
-    <script src="../bower_components/summernote/dist/summernote.js"></script>
-    <script src="../bower_components/summernote/dist/lang/summernote-ko-KR.js"></script>
-    <script src="../client/js/update.js"></script>
-    <link rel="stylesheet" href="../bower_components/summernote/dist/summernote.css">
+    <script src="/bower_components/summernote/dist/summernote.js"></script>
+    <script src="/bower_components/summernote/dist/lang/summernote-ko-KR.js"></script>
+    <script src="/client/js/update.js"></script>
+    <link rel="stylesheet" href="/bower_components/summernote/dist/summernote.css">
 </head>
 <body>
 <%- include('menue.ejs') %>
 <%- include('midImg.ejs') %>
-<div class="col-md-7" style="overflow: scroll; height: 100%; padding: 50px;">
+<div id="mainContents" class="col-md-8" style="overflow: scroll; height: 100%; padding: 0px 20px 0px 20px;">
+    <%- include('nav.ejs') %>
     <div id="formContainer" style="width: 80%; margin: 0px auto;">
         <form action="/board/send" method="post">
             <div class="form-group">
@@ -25,10 +26,9 @@
                 <table id="file_table" class="table table-striped" style="font-size: 12px;">
                     <thead>
                     <th>제목</th>
-                    <th>파일용량</th>
                     <th>삭제</th>
                     </thead>
-                    <tbody>
+                    <tbody id='file_tbody'>
                     </tbody>
                 </table>
             </div>
@@ -38,7 +38,7 @@
             </label>
             <hr>
             <div class="form-group" style="text-align:center;">
-                <input class="btn btn-success" type="button" value="글 작성" onclick="uploadWrite()">
+                <input class="btn btn-success" type="button" value="글 수정" onclick="uploadWrite()">
                 <input class="btn btn-danger" type="button" value="취소">
             </div>
         </form>

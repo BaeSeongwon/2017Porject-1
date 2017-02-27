@@ -20,5 +20,9 @@ $(document).ready(function(){
         $(pointDetail).addClass('glyphicon-menu-left');
       }
     }
-  })
+  });
+  
+ $('.menue-head').click(function(){
+   window.location.href='/';
+ })
 })

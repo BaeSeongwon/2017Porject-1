@@ -11,7 +11,10 @@ $(document).ready(function(){
 
   $('#user_file').change(function(){
     uploadFile($("#user_file")[0].files[0]);
-  })
+  });
+  
+  var wid = $('.dft_imgContainer').outerWidth() + $('.menue-container').width();
+  $('#mainContents').css('width','100%').css('width','-='+ wid +'px');
 });
 
 var uploadData = {
@@ -30,14 +33,13 @@ function uploadWrite(){
 
   var sourceUrl = $(location).attr('href').split('/');
   var url = "/" + sourceUrl[3] + '/send';
-  console.log(uploadData);
 
   $.ajax({
     data : uploadData,
     type : 'post',
     url : url,
     success : function(data){
-      location.assign("http://localhost:3000"+data.result);
+      location.assign(data.result);
     }
   })
 };
@@ -48,17 +50,18 @@ function createDate(){
 }
 
 function uploadImg(files,editor,welEditable){
-  console.log(files);
+  var path = $(location).attr('pathname').split('/')[1];
   data = new FormData();
   data.append("uploadFile", files);
   $.ajax({
      data : data,
      type : "POST",
-     url : "/board/img/upload",
+     url : "/" + path + "/img/upload",
      cache : false,
      contentType : false,
      processData : false,
      success : function(data) {
+       console.log(data);
        $("#summernote").summernote("insertImage", data);
      }
   });
@@ -66,6 +69,7 @@ function uploadImg(files,editor,welEditable){
 
 function uploadFile(files){
   addLoading();
+  var path = $(location).attr('pathname').split('/')[1];
   var file_info = {};
   data = new FormData();
   data.append('uploadFile',files);
@@ -75,14 +79,14 @@ function uploadFile(files){
   $.ajax({
     data : data,
     type : 'POST',
-    url : "/board/file/upload",
+    url : "/" + path + "/file/upload",
     cache : false,
     contentType : false,
     processData : false,
     success : function(data){
       removeLoading();
       if(data == 'success'){
-        $("tbody").append("<tr><td>"+ file_info.name +"</td><td>"+ file_info.size +"</td><td><span class='glyphicon glyphicon-remove file_delete' onclick='remove_table(event)'></span></td></tr>");
+        $("#file_tbody").append("<tr><td>"+ file_info.name +"</td><td>"+ file_info.size +"</td><td><span class='glyphicon glyphicon-remove file_delete' onclick='remove_table(event)'></span></td></tr>");
       }
     }
   });

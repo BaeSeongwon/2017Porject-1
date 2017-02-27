@@ -6,12 +6,15 @@ $(document).ready(function(){
         uploadImg($(this)[0].files[0]);
         readUrl(this);
     });
+    
+    var wid = $('.dft_imgContainer').outerWidth() + $('.menue-container').width();
+	  $('#mainContents').css('width','100%').css('width','-='+ wid +'px');
 });
 
 var imgUrl;
 
 function moveResumeWrite(){
-  window.location.href = "http://localhost:3000/resume/write";
+  window.location.href = "/resume/write";
 }
 
 function sendResume(){
@@ -50,8 +53,8 @@ function sendResume(){
   }
 
   for(var a = 0; a < $('#career').find('tr').length; a++){
-    console.log(a);
     Resume.carrer.push(repeatData($('#carrer').find('tr')[a]));
+    console.log(Resume);
   }
 
   for(var a = 0; a < $('#language').find('tr').length; a++){
@@ -71,13 +74,13 @@ function sendResume(){
     type : 'POST',
     url : '/resume/upload',
     success: function(data){
-      console.log(data);
+      window.location.href = data;
     }
   })
 }
 
 function moveDetailResume(id){
-  window.location.href = "http://localhost:3000/resume/detail?id=" + id;
+  window.location.href = "/resume/detail?id=" + id;
 
 }
 
